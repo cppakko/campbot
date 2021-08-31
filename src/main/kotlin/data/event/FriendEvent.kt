@@ -1,6 +1,7 @@
 package data.event
 
-import listener.Event
+import listener.PassiveEvent
+import listener.PrivateMsgEvent
 
 data class FriendAdd(
     val time: Long,
@@ -8,7 +9,7 @@ data class FriendAdd(
     val post_type: String,
     val notice_type: String,
     val user_id: Long
-): Event
+): PassiveEvent
 
 data class FriendRecall(
     val time: Long,
@@ -17,7 +18,7 @@ data class FriendRecall(
     val notice_type: String,
     val user_id: Long,
     val message_id: Long
-): Event
+): PrivateMsgEvent
 
 data class FriendPoke(
     val post_type: String,
@@ -28,14 +29,14 @@ data class FriendPoke(
     val user_id: Long,
     val target_id: Long,
     val time: Long
-): Event
+): PrivateMsgEvent
 
 data class OfflineFile(
     val post_type: String,
     val notice_type: String,
     val user_id: Long,
     val `file`: File
-): Event {
+): PrivateMsgEvent {
     data class File(
         val name: String,
         val size: Long,
@@ -51,4 +52,4 @@ data class FriendAddRequest(
     val user_id: Long,
     val comment: String,
     val flag: String
-): Event
+): PassiveEvent

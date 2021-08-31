@@ -3,7 +3,7 @@ package event
 import kotlinx.coroutines.channels.Channel
 import mu.KotlinLogging
 
-class EventLogger {
+internal class EventLogger {
     companion object {
         private val logger = KotlinLogging.logger {}
         val channel = Channel<String>()

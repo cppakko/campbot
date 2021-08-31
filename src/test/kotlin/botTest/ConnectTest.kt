@@ -2,6 +2,7 @@ package botTest
 
 import Bot
 import kotlinx.coroutines.*
+import message.MessageBuilder
 import org.junit.jupiter.api.Test
 
 class ConnectTest {
@@ -12,6 +13,9 @@ class ConnectTest {
             val job = launch {
                 bot.open()
             }
+            delay(10000)
+            val msg = MessageBuilder().addLocation("39.8969426","116.3109099","test","test").build()
+            bot.utils.getGroupById(1041084231).sendGroupMsg(msg)
         }
     }
 }

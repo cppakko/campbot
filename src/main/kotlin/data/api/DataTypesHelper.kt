@@ -105,3 +105,9 @@ data class ClientModel(
     val model_show: String,
     val need_pay: Boolean,
 )
+
+data class TextDetection(
+    val text: String,
+    val confidence: Int,
+    val coordinates: Pair<Int,Int>
+)

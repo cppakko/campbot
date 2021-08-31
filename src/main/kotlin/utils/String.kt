@@ -55,3 +55,13 @@ fun String.readHonorType(): HonorType = HonorType.from(
         .get("honor_type")
         .asText()
 )
+
+fun String.readGroupId(): Long = ObjectMapper()
+    .readTree(this)
+    .get("group_id")
+    .asLong()
+
+fun String.readUserId(): Long = ObjectMapper()
+    .readTree(this)
+    .get("user_id")
+    .asLong()

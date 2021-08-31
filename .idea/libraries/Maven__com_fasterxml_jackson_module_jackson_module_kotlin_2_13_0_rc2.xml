@@ -8,6 +8,8 @@
     </JAVADOC>
     <SOURCES>
       <root url="jar://$USER_HOME$/.m2/repository/com/fasterxml/jackson/module/jackson-module-kotlin/2.13.0-rc2/jackson-module-kotlin-2.13.0-rc2-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.m2/repository/com/fasterxml/jackson/module/jackson-module-kotlin/2.13.0-rc2/jackson-module-kotlin-2.13.0-rc2-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.m2/repository/com/fasterxml/jackson/module/jackson-module-kotlin/2.13.0-rc2/jackson-module-kotlin-2.13.0-rc2-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

@@ -1,6 +1,7 @@
-package data
+package data.event
 
-import listener.Event
+import listener.GroupMsgEvent
+import listener.PrivateMsgEvent
 
 //https://docs.go-cqhttp.org/event/
 
@@ -17,7 +18,7 @@ data class PrivateMsg(
     val target_id: Long,
     val time: Long,
     val user_id: Long
-): Event {
+): PrivateMsgEvent {
     data class Message(
         val `data`: Data,
         val type: String
@@ -37,36 +38,36 @@ data class PrivateMsg(
 
 data class FriendPrivateMsg (
     val data: PrivateMsg
-): Event
+): PrivateMsgEvent
 
 data class GroupPrivateMsg (
     val data: PrivateMsg
-): Event
+): PrivateMsgEvent
 
 data class GroupSelfPrivateMsg (
     val data: PrivateMsg
-): Event
+): PrivateMsgEvent
 
 data class OtherPrivateMsg (
     val data: PrivateMsg
-): Event
+): PrivateMsgEvent
 
-data class GroupMsgEvent(
+data class GroupMessageEvent(
     val anonymous: Anonymous?,
     val font: Int,
     val group_id: Long,
-    val message: List<Message>,
+    val message: List<*>,
     val message_id: Long,
     val message_seq: Int,
     val message_type: String,
     val post_type: String,
     val raw_message: String,
-    val self_id: Int,
+    val self_id: Long,
     val sender: Sender,
     val sub_type: String,
     val time: Long,
     val user_id: Long
-): Event {
+): GroupMsgEvent {
     data class Anonymous(
         val id: Long,
         val name: String,
@@ -95,14 +96,14 @@ data class GroupMsgEvent(
 }
 
 data class NormalGroupMsg(
-    val data: GroupMsgEvent
-) : Event
+    val data: GroupMessageEvent
+) : GroupMsgEvent
 
 data class AnonymousGroupMsg(
-    val data: GroupMsgEvent
-) : Event
+    val data: GroupMessageEvent
+) : GroupMsgEvent
 
 data class NoticeGroupMsg(
-    val data: GroupMsgEvent
-) : Event
+    val data: GroupMessageEvent
+) : GroupMsgEvent
 

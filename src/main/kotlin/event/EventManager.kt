@@ -1,8 +1,9 @@
 package event
 
 import Bot
-import listener.Event
-import listener.EventListener
+import listener.*
+import utils.readGroupId
+import utils.readUserId
 import kotlin.reflect.KClass
 
 class EventManager(val bot: Bot) {
@@ -14,9 +15,46 @@ class EventManager(val bot: Bot) {
         eventListeners.add(listener)
     }
 
-    inline fun <reified T : Event> notify(event: T) {
+    inline fun <reified T : PassiveEvent> notify(event: T) {
         listeners[T::class]?.asSequence()
-            ?.filterIsInstance<EventListener<T>>()
+            ?.filterIsInstance<PassiveEventListener<T>>()
             ?.forEach { it.handle(bot,event) }
+    }
+
+    inline fun <reified T : PrivateMsgEvent> notify(event: T,rowEventString: String) {
+        listeners[T::class]?.asSequence()
+            ?.filterIsInstance<PrivateMsgEventListener<T>>()
+            ?.forEach {
+                it.handle(
+                    bot,
+                    event,
+                    bot.utils.getUserById(rowEventString.readUserId())
+                )
+            }
+    }
+
+    inline fun <reified T : GroupMsgEvent> notify(event: T,rowEventString: String) {
+        listeners[T::class]?.asSequence()
+            ?.filterIsInstance<GroupMsgEventListener<T>>()
+            ?.forEach {
+                val groupId = rowEventString.readGroupId()
+                it.handle(bot,
+                    event,
+                    bot.utils.getGroupUserById(groupId,rowEventString.readUserId()),
+                    bot.utils.getGroupById(groupId)
+                )
+            }
+    }
+
+    inline fun <reified T : GroupEvent> notify(event: T,rowEventString: String) {
+        listeners[T::class]?.asSequence()
+            ?.filterIsInstance<GroupEventListener<T>>()
+            ?.forEach {
+                it.handle(
+                    bot,
+                    event,
+                    bot.utils.getGroupById(rowEventString.readGroupId())
+                )
+            }
     }
 }

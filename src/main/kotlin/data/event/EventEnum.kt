@@ -72,7 +72,7 @@ enum class SubTypeEnum(val sub_type: String) {
     HONOR("honor"),
     GROUP_ADD_REQUEST("add"),
     GROUP_INVITE_REQUEST("invite"),
-    ESSENCE_ADD("add"), //TODO
+    ESSENCE_ADD("add"),
     ESSENCE_DELETE("delete"),
     HTTP_POST_ENABLE("enable"),
     HTTP_POST_DISABLE("disable"),

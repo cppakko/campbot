@@ -1,6 +1,6 @@
 package data.event
 
-import listener.Event
+import listener.GroupEvent
 
 data class GroupFileUpload(
     val `file`: File,
@@ -10,7 +10,7 @@ data class GroupFileUpload(
     val self_id: Long,
     val time: Long,
     val user_id: Long
-) : Event {
+) : GroupEvent {
     data class File(
         val busid: Long,
         val id: String,
@@ -28,15 +28,15 @@ data class GroupAdminChange(
     val sub_type: String,
     val time: Long,
     val user_id: Long
-) : Event
+) : GroupEvent
 
 data class GroupAdminSetChange(
     val data: GroupAdminChange
-) : Event
+) : GroupEvent
 
 data class GroupAdminUnSetChange(
     val data: GroupAdminChange
-) : Event
+) : GroupEvent
 
 data class GroupDecreaseOrIncrease(
     val time: Long,
@@ -47,27 +47,27 @@ data class GroupDecreaseOrIncrease(
     val group_id: Long,
     val operator_id: Long,
     val user_id: Long
-) : Event
+) : GroupEvent
 
 data class GroupMemberLeave(
     val data: GroupDecreaseOrIncrease
-) : Event
+) : GroupEvent
 
 data class GroupMemberKick(
     val data: GroupDecreaseOrIncrease
-) : Event
+) : GroupEvent
 
 data class GroupKickMe(
     val data: GroupDecreaseOrIncrease
-) : Event
+) : GroupEvent
 
 data class GroupMemberApprove(
     val data: GroupDecreaseOrIncrease
-) : Event
+) : GroupEvent
 
 data class GroupMemberInvite(
     val data: GroupDecreaseOrIncrease
-) : Event
+) : GroupEvent
 
 data class GroupBan(
     val duration: Long,
@@ -79,11 +79,11 @@ data class GroupBan(
     val sub_type: String,
     val time: Long,
     val user_id: Long
-) : Event
+) : GroupEvent
 
 data class GroupLiftBan (
     val data: GroupBan
-    ): Event
+    ): GroupEvent
 
 data class GroupRecall(
     val group_id: Long,
@@ -94,7 +94,7 @@ data class GroupRecall(
     val self_id: Long,
     val time: Long,
     val user_id: Long
-) : Event
+) : GroupEvent
 
 data class GroupPoke(
     val group_id: Long,
@@ -106,7 +106,7 @@ data class GroupPoke(
     val target_id: Long,
     val time: Long,
     val user_id: Long
-) : Event
+) : GroupEvent
 
 data class GroupLuckyKing(
     val post_type: String,
@@ -115,7 +115,7 @@ data class GroupLuckyKing(
     val sub_type: String,
     val user_id: Long,
     val target_id: Long
-) : Event
+) : GroupEvent
 
 data class GroupHonor(
     val post_type: String,
@@ -124,19 +124,19 @@ data class GroupHonor(
     val sub_type: String,
     val user_id: Long,
     val honor_type: String
-) : Event
+) : GroupEvent
 
 data class TalkativeGroupHonor(
     val data: GroupHonor
-): Event
+): GroupEvent
 
 data class PerformerGroupHonor(
     val data: GroupHonor
-): Event
+): GroupEvent
 
 data class EmotionGroupHonor(
     val data: GroupHonor
-): Event
+): GroupEvent
 
 data class GroupCardUpdate(
     val post_type: String,
@@ -145,7 +145,7 @@ data class GroupCardUpdate(
     val user_id: Long,
     val card_new: String,
     val card_old: String
-) : Event
+) : GroupEvent
 
 data class GroupAddOrInviteRequestEvent(
     val time: Long,
@@ -157,12 +157,12 @@ data class GroupAddOrInviteRequestEvent(
     val user_id: Long,
     val comment: String,
     val flag: String
-) : Event
+) : GroupEvent
 
 data class GroupAddRequestEvent(
     val data: GroupAddOrInviteRequestEvent
-): Event
+): GroupEvent
 
 data class GroupInviteRequestEvent(
     val data: GroupAddOrInviteRequestEvent
-): Event
+): GroupEvent

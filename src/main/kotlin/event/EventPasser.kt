@@ -2,7 +2,6 @@ package event
 
 import Bot
 import com.fasterxml.jackson.databind.ObjectMapper
-import data.*
 import data.event.*
 import data.event.EventEnum.*
 import data.event.HonorType.*
@@ -17,7 +16,7 @@ import kotlinx.coroutines.channels.Channel
 import mu.KotlinLogging
 import utils.*
 
-class EventPasser(private val bot: Bot) {
+internal class EventPasser(private val bot: Bot) {
     companion object {
         val channel = Channel<String>()
         val logger = KotlinLogging.logger {}
@@ -40,10 +39,10 @@ class EventPasser(private val bot: Bot) {
                 }
                 MESSAGE_EVENT -> when (rowEventStr.readMessageType()) {
                     PRIVATE -> when (rowEventStr.readSubType()) {
-                        FRIEND_MESSAGE -> bot.eventManager.notify(FriendPrivateMsg(rowEventStr.asJsonObject()))
-                        GROUP_TEMP_MESSAGE -> bot.eventManager.notify(GroupPrivateMsg(rowEventStr.asJsonObject()))
-                        GROUP_SELF_TEMP_MESSAGE -> bot.eventManager.notify(GroupSelfPrivateMsg(rowEventStr.asJsonObject()))
-                        OTHER_PRIVATE_MESSAGE -> bot.eventManager.notify(OtherPrivateMsg(rowEventStr.asJsonObject()))
+                        FRIEND_MESSAGE -> bot.eventManager.notify(FriendPrivateMsg(rowEventStr.asJsonObject()),rowEventStr)
+                        GROUP_TEMP_MESSAGE -> bot.eventManager.notify(GroupPrivateMsg(rowEventStr.asJsonObject()),rowEventStr)
+                        GROUP_SELF_TEMP_MESSAGE -> bot.eventManager.notify(GroupSelfPrivateMsg(rowEventStr.asJsonObject()),rowEventStr)
+                        OTHER_PRIVATE_MESSAGE -> bot.eventManager.notify(OtherPrivateMsg(rowEventStr.asJsonObject()),rowEventStr)
                         else -> logger.warn {
                             "发生了未知的解析错误 位于 MESSAGE_EVENT -> " +
                                     "MESSAGE_EVENT -> eventStr.readSubType()\n原文 => $rowEventStr"
@@ -51,9 +50,9 @@ class EventPasser(private val bot: Bot) {
                     }
                     GROUP -> {
                         when (rowEventStr.readSubType()) {
-                            NORMAL_GROUP_MESSAGE -> bot.eventManager.notify(NormalGroupMsg(rowEventStr.asJsonObject()))
-                            ANONYMOUS_GROUP_MESSAGE -> bot.eventManager.notify(AnonymousGroupMsg(rowEventStr.asJsonObject()))
-                            NOTICE_GROUP_MESSAGE -> bot.eventManager.notify(NoticeGroupMsg(rowEventStr.asJsonObject()))
+                            NORMAL_GROUP_MESSAGE -> bot.eventManager.notify(NormalGroupMsg(rowEventStr.asJsonObject()),rowEventStr)
+                            ANONYMOUS_GROUP_MESSAGE -> bot.eventManager.notify(AnonymousGroupMsg(rowEventStr.asJsonObject()),rowEventStr)
+                            NOTICE_GROUP_MESSAGE -> bot.eventManager.notify(NoticeGroupMsg(rowEventStr.asJsonObject()),rowEventStr)
                             else -> logger.warn {
                                 "发生了未知的解析错误 位于 MESSAGE_EVENT -> " +
                                         "GROUP -> eventStr.readSubType()\n" +
@@ -69,8 +68,8 @@ class EventPasser(private val bot: Bot) {
                     }
                     GROUP_ADMIN_NOTICE -> {
                         when (rowEventStr.readSubType()) {
-                            SET_GROUP_ADMIN -> bot.eventManager.notify(GroupAdminSetChange(rowEventStr.asJsonObject()))
-                            UNSET_GROUP_ADMIN -> bot.eventManager.notify(GroupAdminUnSetChange(rowEventStr.asJsonObject()))
+                            SET_GROUP_ADMIN -> bot.eventManager.notify(GroupAdminSetChange(rowEventStr.asJsonObject()),rowEventStr)
+                            UNSET_GROUP_ADMIN -> bot.eventManager.notify(GroupAdminUnSetChange(rowEventStr.asJsonObject()),rowEventStr)
                             else -> logger.warn {
                                 "发生了未知的解析错误 位于 NOTICE_EVENT -> " +
                                         "GROUP_ADMIN_NOTICE -> eventStr.readSubType()\n" +
@@ -80,11 +79,11 @@ class EventPasser(private val bot: Bot) {
                     }
                     GROUP_DECREASE, GROUP_INCREASE -> {
                         when (rowEventStr.readSubType()) {
-                            GROUP_LEAVE -> bot.eventManager.notify(GroupMemberLeave(rowEventStr.asJsonObject()))
-                            GROUP_KICK -> bot.eventManager.notify(GroupMemberKick(rowEventStr.asJsonObject()))
-                            GROUP_KICK_ME -> bot.eventManager.notify(GroupKickMe(rowEventStr.asJsonObject()))
-                            GROUP_APPROVE -> bot.eventManager.notify(GroupMemberApprove(rowEventStr.asJsonObject()))
-                            GROUP_INVITE -> bot.eventManager.notify(GroupMemberInvite(rowEventStr.asJsonObject()))
+                            GROUP_LEAVE -> bot.eventManager.notify(GroupMemberLeave(rowEventStr.asJsonObject()),rowEventStr)
+                            GROUP_KICK -> bot.eventManager.notify(GroupMemberKick(rowEventStr.asJsonObject()),rowEventStr)
+                            GROUP_KICK_ME -> bot.eventManager.notify(GroupKickMe(rowEventStr.asJsonObject()),rowEventStr)
+                            GROUP_APPROVE -> bot.eventManager.notify(GroupMemberApprove(rowEventStr.asJsonObject()),rowEventStr)
+                            GROUP_INVITE -> bot.eventManager.notify(GroupMemberInvite(rowEventStr.asJsonObject()),rowEventStr)
                             else -> logger.warn {
                                 "发生了未知的解析错误 位于 NOTICE_EVENT -> " +
                                         "GROUP_GROUP_DECREASE,GROUP_INCREASE -> eventStr.readSubType()\n" +
@@ -94,8 +93,8 @@ class EventPasser(private val bot: Bot) {
                     }
                     GROUP_BAN -> {
                         when (rowEventStr.readSubType()) {
-                            GROUP_BAN_BAN -> bot.eventManager.notify(rowEventStr.asJsonObject<GroupBan>())
-                            GROUP_BAN_LIFT_BAN -> bot.eventManager.notify(GroupLiftBan(rowEventStr.asJsonObject()))
+                            GROUP_BAN_BAN -> bot.eventManager.notify(rowEventStr.asJsonObject<GroupBan>(),rowEventStr)
+                            GROUP_BAN_LIFT_BAN -> bot.eventManager.notify(GroupLiftBan(rowEventStr.asJsonObject()),rowEventStr)
                             else -> logger.warn {
                                 "发生了未知的解析错误 位于 NOTICE_EVENT -> " +
                                         "GROUP_BAN -> eventStr.readSubType()\n" +
@@ -107,10 +106,10 @@ class EventPasser(private val bot: Bot) {
                         bot.eventManager.notify(rowEventStr.asJsonObject<FriendAdd>())
                     }
                     GROUP_RECALL -> {
-                        bot.eventManager.notify(rowEventStr.asJsonObject<GroupRecall>())
+                        bot.eventManager.notify(rowEventStr.asJsonObject<GroupRecall>(),rowEventStr)
                     }
                     FRIEND_RECALL -> {
-                        bot.eventManager.notify(rowEventStr.asJsonObject<FriendRecall>())
+                        bot.eventManager.notify(rowEventStr.asJsonObject<FriendRecall>(),rowEventStr)
                     }
                     NOTIFY -> {
                         when (rowEventStr.readSubType()) {
@@ -119,19 +118,19 @@ class EventPasser(private val bot: Bot) {
                                         .readTree(rowEventStr)
                                         .get("group_id") != null
                                 ) {
-                                    bot.eventManager.notify(rowEventStr.asJsonObject<GroupPoke>())
+                                    bot.eventManager.notify(rowEventStr.asJsonObject<GroupPoke>(),rowEventStr)
                                 } else {
-                                    bot.eventManager.notify(rowEventStr.asJsonObject<FriendPoke>())
+                                    bot.eventManager.notify(rowEventStr.asJsonObject<FriendPoke>(),rowEventStr)
                                 }
                             }
                             LUCKY_KING -> {
-                                bot.eventManager.notify(rowEventStr.asJsonObject<GroupLuckyKing>())
+                                bot.eventManager.notify(rowEventStr.asJsonObject<GroupLuckyKing>(),rowEventStr)
                             }
                             HONOR -> {
                                 when (rowEventStr.readHonorType()) {
-                                    HONOR_TALKATIVE -> bot.eventManager.notify(TalkativeGroupHonor(rowEventStr.asJsonObject()))
-                                    HONOR_PERFORMER -> bot.eventManager.notify(PerformerGroupHonor(rowEventStr.asJsonObject()))
-                                    HONOR_EMOTION -> bot.eventManager.notify(EmotionGroupHonor(rowEventStr.asJsonObject()))
+                                    HONOR_TALKATIVE -> bot.eventManager.notify(TalkativeGroupHonor(rowEventStr.asJsonObject()),rowEventStr)
+                                    HONOR_PERFORMER -> bot.eventManager.notify(PerformerGroupHonor(rowEventStr.asJsonObject()),rowEventStr)
+                                    HONOR_EMOTION -> bot.eventManager.notify(EmotionGroupHonor(rowEventStr.asJsonObject()),rowEventStr)
                                 }
                             }
                             else -> logger.warn {
@@ -142,10 +141,10 @@ class EventPasser(private val bot: Bot) {
                         }
                     }
                     GROUP_CARD -> {
-                        bot.eventManager.notify(rowEventStr.asJsonObject<GroupCardUpdate>())
+                        bot.eventManager.notify(rowEventStr.asJsonObject<GroupCardUpdate>(),rowEventStr)
                     }
                     OFFLINE_FILE -> {
-                        bot.eventManager.notify(rowEventStr.asJsonObject<OfflineFile>())
+                        bot.eventManager.notify(rowEventStr.asJsonObject<OfflineFile>(),rowEventStr)
                     }
                     ESSENCE_MESSAGE -> {
                         when (rowEventStr.readSubType()) {

@@ -4,4 +4,4 @@ package utils
 annotation class ApiEndPoint(val path: String)
 
 @Target(AnnotationTarget.CLASS)
-annotation class NoReturnData()
+annotation class NoReturnData

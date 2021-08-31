@@ -141,10 +141,8 @@ data class GetWordSlicesResponse(
     val slices: List<String>,
 )
 
-//TODO:what is TextDetection
 data class OcrImageResponse(
-//    val texts: List<TextDetection>,
-    val texts: List<String>,
+    val texts: List<TextDetection>,
     val language: String,
 )
 

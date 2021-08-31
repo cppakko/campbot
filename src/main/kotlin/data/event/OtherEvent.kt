@@ -1,13 +1,14 @@
 package data.event
 
 import listener.Event
+import listener.PassiveEvent
 
 data class OtherClientStatusChangeEvent(
     val post_type: String,
     val notice_type: String,
     val client: Device,
     val online: Boolean
-): Event {
+): PassiveEvent {
     data class Device(
         val app_id: Long,
         val device_name: String,
@@ -22,12 +23,12 @@ data class EssenceEvent(
     val sender_id: Long,
     val operator_id: Long,
     val message_id: Int
-): Event
+): PassiveEvent
 
 data class AddEssenceEvent(
     val data: EssenceEvent
-): Event
+): PassiveEvent
 
 data class DeleteEssenceEvent(
     val data: EssenceEvent
-): Event
+): PassiveEvent

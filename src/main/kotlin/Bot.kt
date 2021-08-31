@@ -1,3 +1,4 @@
+import entity.BotUtilImpl
 import event.EventLogger
 import event.EventManager
 import event.EventPasser
@@ -15,10 +16,10 @@ class Bot(
 ) {
     //TODO 优化初始化顺序 确保不出现NULL
     lateinit var rootPathClientJob: Job
-    lateinit var apiClientWebSocketSession: DefaultClientWebSocketSession
     private val logger = KotlinLogging.logger {}
     val eventManager = EventManager(this)
     var isRunning: Boolean = false
+    val utils = BotUtilImpl(this)
 
     suspend fun open() {
         coroutineScope {
