@@ -1,14 +1,15 @@
 package api
 
+import com.fasterxml.jackson.annotation.JsonRawValue
 import com.fasterxml.jackson.databind.ObjectMapper
 import listener.Api
 import utils.ApiEndPoint
 import java.util.*
 
 class ApiBuilder<T: Api>(private val paramsData: T) {
-    data class ApiTemplate(
+    private data class ApiTemplate(
         val action: String,
-        val params: String,
+        @JsonRawValue val params: String,
         val echo: String
     )
 

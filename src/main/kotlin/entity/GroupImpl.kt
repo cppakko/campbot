@@ -1,9 +1,13 @@
 package entity
 
 import Bot
+import api.ApiBuilder
+import com.fasterxml.jackson.databind.ObjectMapper
 import data.api.*
 import entity.interfaces.GroupInterface
+import kotlinx.coroutines.channels.Channel
 import network.websocket.WsInit
+import utils.asJsonObject
 
 class Group(override val groupId: Long, override val bot: Bot) : GroupInterface {
     override fun getGroupMember(): List<User> {
@@ -11,9 +15,19 @@ class Group(override val groupId: Long, override val bot: Bot) : GroupInterface 
     }
 
     override suspend fun sendGroupMsg(msg: String): SendPrivateMsgResponse {
-        WsInit.callApiChannel.send(msg)
-        //TODO Not yet implemented
-        return SendPrivateMsgResponse(123)
+        val apiMsg = ApiBuilder(SendGroupMsg(groupId,msg)).build().first
+        val backChannel = Channel<String>()
+        WsInit.callApiChannel.send(Pair(apiMsg,backChannel))
+        val res: SendPrivateMsgResponse
+        var str = "";
+        for (string in backChannel) {
+            str = string
+            backChannel.close()
+            break
+        }
+        res = ObjectMapper().readTree(str).get("data").asText().asJsonObject()
+        println(2)
+        return res
     }
 
     override fun setGroupKick(user_id: Long) {

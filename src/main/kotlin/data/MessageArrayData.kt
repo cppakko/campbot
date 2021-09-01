@@ -1,8 +1,8 @@
 package data
 
-data class Text(
+/*data class Text(
     val text: String
-)
+)*/
 
 data class Face(
     val id: Int
@@ -12,15 +12,15 @@ data class Image(
     val file: String,
     val type: String,
     val cache: Int,
-    val proxy: Int,
-    val timeout:Long
+    val id: String,
+    val c:String
 )
 
 data class ImageWithoutType(
     val file: String,
     val cache: Int,
-    val proxy: Int,
-    val timeout:Long
+    val id: String,
+    val c:String
 )
 
 data class Record(
@@ -33,17 +33,16 @@ data class Record(
 
 data class Video(
     val file: String,
-    val cache: Int,
-    val proxy: Int,
-    val timeout:Long
+    val cover: String,
+    val c: Int
 )
 
 data class At(
-    val qq: String
+    val qq: String,
+    val name: String
 )
 
 data class Poke(
-    val type: String,
     val id: String,
 )
 
@@ -59,12 +58,12 @@ data class Contact(
     val id: String
 )
 
-data class Location(
+/*data class Location(
     val lat: String,
     val lon: String,
     val title: String,
     val content: String
-)
+)*/
 
 data class Music(
     val type: String,
@@ -81,15 +80,20 @@ data class CustomMusic(
 )
 
 data class Reply(
-    val id: String
+    val id: Int,
+    val text: String,
+    val qq: Long,
+    val time: Long,
+    val seq: Long
 )
 
 data class Forward(
     val id: String
 )
-data class Node(
+//TODO
+/*data class Node(
     val id: String
-)
+)*/
 
 data class CustomNode(
     val user_id: String,
@@ -99,4 +103,18 @@ data class CustomNode(
 
 data class XMLOrJsonMessage(
     val data: String
+)
+
+data class CardImage(
+    val file: String,
+    val minwidth: Long,
+    val minheight: Long,
+    val maxwidth: Long,
+    val maxheight: Long,
+    val source: String,
+    val icon: String
+)
+
+data class TTS(
+    val text: String
 )

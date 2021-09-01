@@ -2,6 +2,7 @@
 
 package data.api
 
+import com.fasterxml.jackson.annotation.JsonRawValue
 import listener.Api
 import utils.ApiEndPoint
 
@@ -9,14 +10,14 @@ import utils.ApiEndPoint
 data class SendPrivateMsg(
     val user_id: Long,
     val group_id: Long,
-    val message: String,
+    @JsonRawValue val message: String,
     val auto_escape: Boolean = false,
 ): Api
 
 @ApiEndPoint("send_group_msg")
 data class SendGroupMsg(
     val group_id: Long,
-    val message: String,
+    @JsonRawValue val message: String,
     val auto_escape: Boolean = false,
 ): Api
 
@@ -31,7 +32,7 @@ data class SendMsg(
     val message_type: String,
     val user_id: Long,
     val group_id: Long,
-    val message: String,
+    @JsonRawValue val message: String,
     val auto_escape: Boolean = false,
 ): Api
 

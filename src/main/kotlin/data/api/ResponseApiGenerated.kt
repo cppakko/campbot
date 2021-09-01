@@ -2,6 +2,8 @@
 
 package data.api
 
+import com.fasterxml.jackson.annotation.JsonRawValue
+
 data class SendPrivateMsgResponse(
     val message_id: Int,
 )
@@ -19,7 +21,7 @@ data class GetMsgResponse(
     val real_id: Int,
     val sender: Sender,
     val time: Int,
-    val message: String,
+    @JsonRawValue val message: String,
     val raw_message: String,
 )
 
