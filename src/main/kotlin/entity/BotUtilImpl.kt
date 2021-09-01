@@ -39,7 +39,7 @@ class BotUtilImpl(val bot: Bot) : BotUtil {
         TODO("Not yet implemented")
     }
 
-    override suspend fun c(): MutableList<Group> {
+    override suspend fun reflashGroupList(): MutableList<Group> {
         val returnChannel = Channel<String>()
         val api = ApiBuilder(GetGroupList()).build()
         WsInit.callApiChannel.send(Pair(api, returnChannel))
