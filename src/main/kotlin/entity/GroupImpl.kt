@@ -10,23 +10,22 @@ import network.websocket.WsInit
 import utils.asJsonObject
 
 class Group(override val groupId: Long, override val bot: Bot) : GroupInterface {
+
     override fun getGroupMember(): List<User> {
         TODO("Not yet implemented")
     }
 
     override suspend fun sendGroupMsg(msg: String): SendPrivateMsgResponse {
-        val apiMsg = ApiBuilder(SendGroupMsg(groupId,msg)).build().first
-        val backChannel = Channel<String>()
-        WsInit.callApiChannel.send(Pair(apiMsg,backChannel))
-        val res: SendPrivateMsgResponse
-        var str = "";
-        for (string in backChannel) {
-            str = string
-            backChannel.close()
+        val returnChannel = Channel<String>()
+        val apiMsg = ApiBuilder(SendGroupMsg(groupId, msg)).build()
+        WsInit.callApiChannel.send(Pair(apiMsg, returnChannel))
+        var res = SendPrivateMsgResponse(-1)
+        for (str in returnChannel) {
+            println(str)
+            res = ObjectMapper().readTree(str).get("data").toString().asJsonObject()
+            returnChannel.close()
             break
         }
-        res = ObjectMapper().readTree(str).get("data").asText().asJsonObject()
-        println(2)
         return res
     }
 

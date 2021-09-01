@@ -60,13 +60,11 @@ data class GetGroupInfoResponse(
     val group_id: Long,
     val group_name: String,
     val group_memo: String,
-    val group_create_time: UInt,
-    val group_level: UInt,
+    val group_create_time: Int,
+    val group_level: Int,
     val member_count: Int,
     val max_member_count: Int,
 )
-
-
 
 data class GetGroupMemberInfoResponse(
     val group_id: Long,

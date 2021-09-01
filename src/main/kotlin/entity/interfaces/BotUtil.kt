@@ -12,8 +12,8 @@ interface BotUtil {
     fun getStrangerInfo(user_id: Long,noCache: Boolean = false): GetStrangerInfoResponse
     fun getFriendList(): Array<User>
     fun deleteFriend(friend_id: Long)
-    fun getGroupInfo(group_id: Long,noCache: Boolean = false): GetGroupInfoResponse
-    fun getGroupList(): Array<Group>
+    fun getGroupInfo(group_id: Long, noCache: Boolean = false): GetGroupInfoResponse
+    suspend fun reflashGroupList(): MutableList<Group>
     fun canSendImage(): Boolean
     fun canSendRecord(): Boolean
     fun getVersionInfo(): GetVersionInfoResponse
@@ -32,6 +32,7 @@ interface BotUtil {
 
     fun getUserById(user_id: Long): User
     fun getGroupById(group_id: Long): Group
-    fun getGroupUserById(user_id: Long,group_id: Long): GroupUser
+    suspend fun getGroupByIdSafely(group_id: Long): Group
+    fun getGroupUserById(user_id: Long, group_id: Long): GroupUser
 
 }

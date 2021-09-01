@@ -13,11 +13,11 @@ class ApiBuilder<T: Api>(private val paramsData: T) {
         val echo: String
     )
 
-    fun build(): Pair<String,String> {
+    fun build(): String {
         val mapper = ObjectMapper()
         val apiPath = (paramsData::class.annotations[0] as ApiEndPoint).path
         val paramsStr = mapper.writeValueAsString(paramsData)
         val uuid = UUID.randomUUID().toString()
-        return Pair(mapper.writeValueAsString(ApiTemplate(apiPath,paramsStr,uuid)),uuid)
+        return mapper.writeValueAsString(ApiTemplate(apiPath, paramsStr, uuid))
     }
 }

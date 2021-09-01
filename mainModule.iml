@@ -32,6 +32,9 @@
       <excludeFolder url="file://$MODULE_DIR$/temp/data/cache" />
       <excludeFolder url="file://$MODULE_DIR$/temp/data/voices" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
+      <excludeFolder url="file://$MODULE_DIR$/temp" />
+      <excludeFolder url="file://$MODULE_DIR$/src/test/kotlin/api" />
+      <excludeFolder url="file://$MODULE_DIR$/src/test/kotlin/data" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

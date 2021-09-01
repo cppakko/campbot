@@ -1,8 +1,9 @@
 import entity.BotUtilImpl
+import entity.Group
+import entity.User
 import event.EventLogger
 import event.EventManager
 import event.EventPasser
-import io.ktor.client.features.websocket.*
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.coroutineScope
@@ -16,9 +17,11 @@ class Bot(
 ) {
     //TODO 优化初始化顺序 确保不出现NULL
     lateinit var rootPathClientJob: Job
+    lateinit var groupList: MutableList<Group>
+    lateinit var friendList: MutableList<User>
     private val logger = KotlinLogging.logger {}
     val eventManager = EventManager(this)
-    var isRunning: Boolean = false
+    private var isRunning: Boolean = false
     val utils = BotUtilImpl(this)
 
     suspend fun open() {
@@ -33,7 +36,9 @@ class Bot(
     suspend fun close() {
         if (isRunning) {
             rootPathClientJob.cancelAndJoin()
-        }
-        else logger.warn { "Bot当前没有在运行!!" }
+        } else logger.warn { "Bot当前没有在运行!!" }
     }
+
+    fun isGroupListInitialized() = ::groupList.isInitialized
+    fun isFriendListInitialized() = ::friendList.isInitialized
 }

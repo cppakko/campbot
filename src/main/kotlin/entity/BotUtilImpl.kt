@@ -1,8 +1,14 @@
 package entity
 
 import Bot
+import api.ApiBuilder
+import com.fasterxml.jackson.databind.ObjectMapper
 import data.api.*
 import entity.interfaces.BotUtil
+import exceptions.GroupNotFoundException
+import kotlinx.coroutines.channels.Channel
+import network.websocket.WsInit
+import utils.asJsonObject
 
 class BotUtilImpl(val bot: Bot) : BotUtil {
     override fun setFriendAddRequest(flag: String, approve: Boolean, remark: String) {
@@ -33,8 +39,23 @@ class BotUtilImpl(val bot: Bot) : BotUtil {
         TODO("Not yet implemented")
     }
 
-    override fun getGroupList(): Array<Group> {
-        TODO("Not yet implemented")
+    override suspend fun c(): MutableList<Group> {
+        val returnChannel = Channel<String>()
+        val api = ApiBuilder(GetGroupList()).build()
+        WsInit.callApiChannel.send(Pair(api, returnChannel))
+        for (str in returnChannel) {
+            returnChannel.close()
+            val list = ObjectMapper().readTree(str).get("data").toString().asJsonObject<Array<GetGroupInfoResponse>>()
+            if (!bot.isGroupListInitialized()) {
+                bot.groupList = mutableListOf()
+            } else {
+                bot.groupList.clear()
+            }
+            list.forEach { groupInfo ->
+                bot.groupList.add(Group(groupInfo.group_id, bot))
+            }
+        }
+        return bot.groupList
     }
 
     override fun canSendImage(): Boolean {
@@ -102,7 +123,17 @@ class BotUtilImpl(val bot: Bot) : BotUtil {
     }
 
     override fun getGroupById(group_id: Long): Group {
-        return Group(group_id,bot)
+        return Group(group_id, bot)
+    }
+
+    override suspend fun getGroupByIdSafely(group_id: Long): Group {
+        if (!(bot.isGroupListInitialized())) {
+            bot.utils.reflashGroupList()
+        }
+        for (group in bot.groupList) {
+            if (group.groupId == group_id) return Group(group_id, bot)
+        }
+        throw GroupNotFoundException()
     }
 
     override fun getGroupUserById(user_id: Long, group_id: Long): GroupUser {

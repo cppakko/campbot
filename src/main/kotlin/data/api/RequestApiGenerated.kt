@@ -313,11 +313,28 @@ data class CheckUrlSafely(
 @ApiEndPoint("_get_model_show")
 data class GetModelShow(
     val model: String,
-): Api
+) : Api
 
 @ApiEndPoint("_set_model_show")
 data class SetModelShow(
     val model: String,
     val model_show: String,
-): Api
+) : Api
 
+@ApiEndPoint("get_group_list")
+class GetGroupList : Api
+
+@ApiEndPoint("get_friend_list")
+class GetFriendList : Api
+
+@ApiEndPoint("get_login_info")
+class GetLoginInfo : Api
+
+@ApiEndPoint("can_send_image")
+class CanSendImage : Api
+
+@ApiEndPoint("can_send_record")
+class CanSendRecord : Api
+
+@ApiEndPoint("get_version_info")
+class GetVersionInfo : Api

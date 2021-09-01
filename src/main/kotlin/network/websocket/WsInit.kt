@@ -1,7 +1,6 @@
 package network.websocket
 
 import Bot
-import event.EventPasser
 import io.ktor.client.*
 import io.ktor.client.features.websocket.*
 import io.ktor.http.*
@@ -41,9 +40,10 @@ class WsInit {
                         try {
                             for (message in incoming) {
                                 message as? Frame.Text ?: continue
-                                println(message.readText() + " TEST TEST TEST")
                                 for (channel in apiOutputChannel) {
                                     channel.send(message.readText())
+                                    channel.close()
+                                    break
                                 }
                             }
                         } catch (e: Exception) {

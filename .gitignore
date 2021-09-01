@@ -12,4 +12,4 @@ buildNumber.properties
 .mvn/wrapper/maven-wrapper.jar
 
 /temp/
-/src/test/kotlin/Playground.kt
+/src/test
