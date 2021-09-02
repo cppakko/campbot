@@ -21,32 +21,33 @@ class EventManager(val bot: Bot) {
             ?.forEach { it.handle(bot,event) }
     }
 
-    inline fun <reified T : PrivateMsgEvent> notify(event: T,rowEventString: String) {
+    suspend inline fun <reified T : PrivateMsgEvent> notify(event: T, rowEventString: String) {
         listeners[T::class]?.asSequence()
             ?.filterIsInstance<PrivateMsgEventListener<T>>()
             ?.forEach {
                 it.handle(
                     bot,
                     event,
-                    bot.utils.getUserById(rowEventString.readUserId())
+                    bot.utils.getFriendById(rowEventString.readUserId())
                 )
             }
     }
 
-    inline fun <reified T : GroupMsgEvent> notify(event: T,rowEventString: String) {
+    suspend inline fun <reified T : GroupMsgEvent> notify(event: T, rowEventString: String) {
         listeners[T::class]?.asSequence()
             ?.filterIsInstance<GroupMsgEventListener<T>>()
             ?.forEach {
                 val groupId = rowEventString.readGroupId()
-                it.handle(bot,
+                it.handle(
+                    bot,
                     event,
-                    bot.utils.getGroupUserById(groupId,rowEventString.readUserId()),
+                    bot.utils.getGroupUserById(groupId, rowEventString.readUserId()),
                     bot.utils.getGroupById(groupId)
                 )
             }
     }
 
-    inline fun <reified T : GroupEvent> notify(event: T,rowEventString: String) {
+    suspend inline fun <reified T : GroupEvent> notify(event: T, rowEventString: String) {
         listeners[T::class]?.asSequence()
             ?.filterIsInstance<GroupEventListener<T>>()
             ?.forEach {

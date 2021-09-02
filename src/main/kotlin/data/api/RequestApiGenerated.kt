@@ -3,16 +3,24 @@
 package data.api
 
 import com.fasterxml.jackson.annotation.JsonRawValue
+import data.event.GroupMessageEvent
 import listener.Api
 import utils.ApiEndPoint
 
 @ApiEndPoint("send_private_msg")
 data class SendPrivateMsg(
     val user_id: Long,
+    @JsonRawValue val message: String,
+    val auto_escape: Boolean = false,
+) : Api
+
+@ApiEndPoint("send_private_msg")
+data class SendGroupTempPrivateMsg(
+    val user_id: Long,
     val group_id: Long,
     @JsonRawValue val message: String,
     val auto_escape: Boolean = false,
-): Api
+) : Api
 
 @ApiEndPoint("send_group_msg")
 data class SendGroupMsg(
@@ -67,7 +75,7 @@ data class SetGroupKick(
 data class SetGroupBan(
     val group_id: Long,
     val user_id: Long,
-    val duration: Int,
+    val duration: Long,
 ): Api
 
 //尚未支持
@@ -83,27 +91,35 @@ val duration: Int,
 data class SetGroupWholeBan(
     val group_id: Long,
     val enable: Boolean = true,
-): Api
+) : Api
 
 @ApiEndPoint("set_group_admin")
 data class SetGroupAdmin(
     val group_id: Long,
     val user_id: Long,
     val enable: Boolean = true,
-): Api
+) : Api
 
-@ApiEndPoint("set_group_anonymous")
+//暂未支持
+/*@ApiEndPoint("set_group_anonymous")
 data class SetGroupAnonymous(
     val group_id: Long,
     val enable: Boolean = true,
-): Api
+): Api*/
+
+data class SetGroupAnonymousBan(
+    val group_id: Long,
+    val anonymous: GroupMessageEvent.Anonymous,
+    val flag: String,
+    val duration: Long
+) : Api
 
 @ApiEndPoint("set_group_card")
 data class SetGroupCard(
     val group_id: Long,
     val user_id: Long,
     val card: String = "",
-): Api
+) : Api
 
 @ApiEndPoint("set_group_name")
 data class SetGroupName(
@@ -122,7 +138,7 @@ data class SetGroupSpecialTitle(
     val group_id: Long,
     val user_id: Long,
     val special_title: String = "",
-    val duration: Int = -1,
+    val duration: Long = -1,
 ): Api
 
 @ApiEndPoint("set_friend_add_request")
@@ -194,7 +210,7 @@ data class GetRecord(
 
 @ApiEndPoint("set_restart")
 data class SetRestart(
-    val delay: Int,
+    val delay: Long,
 ): Api
 
 @ApiEndPoint("set_group_portrait")
@@ -338,3 +354,9 @@ class CanSendRecord : Api
 
 @ApiEndPoint("get_version_info")
 class GetVersionInfo : Api
+
+@ApiEndPoint("get_status")
+class GetStatus : Api
+
+@ApiEndPoint("get_group_system_msg")
+class GetGroupSystemMsg : Api

@@ -1,6 +1,4 @@
 import entity.BotUtilImpl
-import entity.Group
-import entity.User
 import event.EventLogger
 import event.EventManager
 import event.EventPasser
@@ -9,7 +7,7 @@ import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import mu.KotlinLogging
-import network.websocket.WsInit
+import network.websocket.WebSocketHelper
 
 class Bot(
     val ipAddress: String,
@@ -17,19 +15,17 @@ class Bot(
 ) {
     //TODO 优化初始化顺序 确保不出现NULL
     lateinit var rootPathClientJob: Job
-    lateinit var groupList: MutableList<Group>
-    lateinit var friendList: MutableList<User>
     private val logger = KotlinLogging.logger {}
     val eventManager = EventManager(this)
     private var isRunning: Boolean = false
-    val utils = BotUtilImpl(this)
+    val utils = BotUtilImpl()
 
     suspend fun open() {
         coroutineScope {
             isRunning = true
             launch { EventPasser(this@Bot).run() }
             launch { EventLogger().init() }
-            launch { WsInit().wsInit(this@Bot) }
+            launch { WebSocketHelper().connectionInit(this@Bot) }
         }
     }
 
@@ -38,7 +34,4 @@ class Bot(
             rootPathClientJob.cancelAndJoin()
         } else logger.warn { "Bot当前没有在运行!!" }
     }
-
-    fun isGroupListInitialized() = ::groupList.isInitialized
-    fun isFriendListInitialized() = ::friendList.isInitialized
 }

@@ -109,5 +109,11 @@ data class ClientModel(
 data class TextDetection(
     val text: String,
     val confidence: Int,
-    val coordinates: Pair<Int,Int>
+    val coordinates: Pair<Int, Int>
+)
+
+data class Friend(
+    val user_id: Long,
+    val nickname: String,
+    val remark: String
 )

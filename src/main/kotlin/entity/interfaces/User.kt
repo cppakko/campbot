@@ -1,16 +1,20 @@
 package entity.interfaces
 
-import data.api.GetVersionInfoResponse
+import data.api.ApiResponse
+import data.api.GetVipInfoResponse
+import data.api.NullData
 import data.api.SendPrivateMsgResponse
 
 interface UserInterface {
     val userId: Long
 
-    fun sendPrivateMsg(msg: String): SendPrivateMsgResponse
-    fun getVipInfo(): GetVersionInfoResponse
+    suspend fun sendPrivateMsg(msg: String): ApiResponse<SendPrivateMsgResponse>
+    suspend fun getVipInfo(): ApiResponse<GetVipInfoResponse>
 }
 
 interface GroupUserInterface : UserInterface {
-    fun kickFromGroup()
-    fun groupBan(duration: Long)
+    val groupId: Long
+
+    suspend fun kickFromGroup(): ApiResponse<NullData>
+    suspend fun groupBan(duration: Long): ApiResponse<NullData>
 }

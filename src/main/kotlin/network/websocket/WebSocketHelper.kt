@@ -11,13 +11,13 @@ import kotlinx.coroutines.launch
 import utils.outputMessages
 
 //TODO RENAME
-class WsInit {
+class WebSocketHelper {
     companion object {
-        val callApiChannel = Channel<Pair<String,Channel<String>>>()
+        val callApiChannel = Channel<Pair<String, Channel<String>>>()
         val apiOutputChannel = Channel<Channel<String>>()
     }
 
-    suspend fun wsInit(bot: Bot) {
+    suspend fun connectionInit(bot: Bot) {
         coroutineScope {
             val client = HttpClient {
                 install(WebSockets)

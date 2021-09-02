@@ -5,3 +5,5 @@ class GroupNotFoundException : Exception()
 class GroupUserNotFoundException : Exception()
 
 class FriendNotFoundException : Exception()
+
+class ApiCallFailedException : Exception()

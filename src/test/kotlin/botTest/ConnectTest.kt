@@ -6,7 +6,6 @@ import io.ktor.client.features.websocket.*
 import io.ktor.http.*
 import io.ktor.http.cio.websocket.*
 import kotlinx.coroutines.*
-import message.MessageBuilder
 import org.junit.jupiter.api.Test
 
 class ConnectTest {
@@ -37,11 +36,11 @@ suspend fun DefaultClientWebSocketSession.inputMessages() {
     }
 }
 
-suspend fun DefaultClientWebSocketSession.outputMessages() {
+fun DefaultClientWebSocketSession.outputMessages(str: String) {
     try {
         for (message in incoming) {
             message as? Frame.Text ?: continue
-            println(message.readText())
+            println(str + message.readText())
         }
     } catch (e: Exception) {
         println("Error while receiving: " + e.localizedMessage)
@@ -53,12 +52,22 @@ fun main() {
         install(WebSockets)
     }
     runBlocking {
-        client.webSocket(method = HttpMethod.Get, host = "127.0.0.1", port = 6700, path = "/api") {
-            val messageOutputRoutine = launch { outputMessages() }
-            val userInputRoutine = launch { inputMessages() }
+        launch {
+            client.webSocket(method = HttpMethod.Get, host = "127.0.0.1", port = 6700, path = "/api") {
+                val messageOutputRoutine = launch { outputMessages("1    ") }
+                val userInputRoutine = launch { inputMessages() }
 
-            userInputRoutine.join() // Wait for completion; either "exit" or error
-            messageOutputRoutine.cancelAndJoin()
+                userInputRoutine.join() // Wait for completion; either "exit" or error
+                messageOutputRoutine.cancelAndJoin()
+            }
+        }
+        launch {
+            client.webSocket(method = HttpMethod.Get, host = "127.0.0.1", port = 6700, path = "/api") {
+                val messageOutputRoutine = launch { outputMessages("2    ") }
+                delay(10000)
+                send("iojjijiji")
+                messageOutputRoutine.join()
+            }
         }
     }
     client.close()

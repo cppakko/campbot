@@ -1,142 +1,131 @@
 package entity
 
-import Bot
 import api.ApiBuilder
-import com.fasterxml.jackson.databind.ObjectMapper
 import data.api.*
 import entity.interfaces.BotUtil
+import exceptions.FriendNotFoundException
 import exceptions.GroupNotFoundException
+import exceptions.GroupUserNotFoundException
 import kotlinx.coroutines.channels.Channel
-import network.websocket.WsInit
-import utils.asJsonObject
+import utils.getReturnValue
 
-class BotUtilImpl(val bot: Bot) : BotUtil {
-    override fun setFriendAddRequest(flag: String, approve: Boolean, remark: String) {
-        TODO("Not yet implemented")
-    }
+class BotUtilImpl : BotUtil {
+    private val returnChannel = Channel<String>()
+    override suspend fun setFriendAddRequest(flag: String, approve: Boolean, remark: String): ApiResponse<NullData> =
+        returnChannel.getReturnValue(ApiBuilder(SetFriendAddRequest(flag, approve, remark)).build())
 
-    override fun setGroupAddRequest(flag: String, sub_type: String, approve: Boolean, reason: String) {
-        TODO("Not yet implemented")
-    }
+    override suspend fun setGroupAddRequest(
+        flag: String,
+        sub_type: String,
+        approve: Boolean,
+        reason: String
+    ): ApiResponse<NullData> =
+        returnChannel.getReturnValue(ApiBuilder(SetGroupAddRequest(flag, sub_type, approve, reason)).build())
 
-    override fun getBotInfo(): GetLoginInfoResponse {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getBotInfo(): ApiResponse<GetLoginInfoResponse> =
+        returnChannel.getReturnValue(ApiBuilder(GetLoginInfo()).build())
 
-    override fun getStrangerInfo(user_id: Long, noCache: Boolean): GetStrangerInfoResponse {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getStrangerInfo(user_id: Long, noCache: Boolean): ApiResponse<GetStrangerInfoResponse> =
+        returnChannel.getReturnValue(ApiBuilder(GetStrangerInfo(user_id, noCache)).build())
 
-    override fun getFriendList(): Array<User> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getFriendList(): ApiResponse<Array<Friend>> =
+        returnChannel.getReturnValue(ApiBuilder(GetFriendList()).build())
 
-    override fun deleteFriend(friend_id: Long) {
-        TODO("Not yet implemented")
-    }
+    override suspend fun deleteFriend(friend_id: Long): ApiResponse<NullData> =
+        returnChannel.getReturnValue(ApiBuilder(DeleteFriend(friend_id)).build())
 
-    override fun getGroupInfo(group_id: Long, noCache: Boolean): GetGroupInfoResponse {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getGroupInfo(group_id: Long, noCache: Boolean): ApiResponse<GetGroupInfoResponse> =
+        returnChannel.getReturnValue(ApiBuilder(GetGroupInfo(group_id, noCache)).build())
 
-    override suspend fun reflashGroupList(): MutableList<Group> {
-        val returnChannel = Channel<String>()
-        val api = ApiBuilder(GetGroupList()).build()
-        WsInit.callApiChannel.send(Pair(api, returnChannel))
-        for (str in returnChannel) {
-            returnChannel.close()
-            val list = ObjectMapper().readTree(str).get("data").toString().asJsonObject<Array<GetGroupInfoResponse>>()
-            if (!bot.isGroupListInitialized()) {
-                bot.groupList = mutableListOf()
-            } else {
-                bot.groupList.clear()
-            }
-            list.forEach { groupInfo ->
-                bot.groupList.add(Group(groupInfo.group_id, bot))
-            }
+    override suspend fun getGroupInfoList(): ApiResponse<List<GetGroupInfoResponse>> =
+        returnChannel.getReturnValue(ApiBuilder(GetGroupList()).build())
+
+    override suspend fun canSendImage(): ApiResponse<CanSendImageResponse> =
+        returnChannel.getReturnValue(ApiBuilder(CanSendImage()).build())
+
+    override suspend fun canSendRecord(): ApiResponse<CanSendRecordResponse> =
+        returnChannel.getReturnValue(ApiBuilder(CanSendRecord()).build())
+
+    override suspend fun getVersionInfo(): ApiResponse<GetVersionInfoResponse> =
+        returnChannel.getReturnValue(ApiBuilder(GetVersionInfo()).build())
+
+    override suspend fun setGoCqhttpRestart(delay: Long): ApiResponse<NullData> =
+        returnChannel.getReturnValue(ApiBuilder(SetRestart(delay)).build())
+
+    override suspend fun ocrImage(image_id: String): ApiResponse<OcrImageResponse> =
+        returnChannel.getReturnValue(ApiBuilder(OcrImage(image_id)).build())
+
+    override suspend fun getStatus(): ApiResponse<GetStatusResponse> =
+        returnChannel.getReturnValue(ApiBuilder(GetStatus()).build())
+
+    override suspend fun reloadEventFilter(file: String): ApiResponse<NullData> =
+        returnChannel.getReturnValue(ApiBuilder(ReloadEventFilter(file)).build())
+
+    override suspend fun downloadFile(
+        url: String,
+        thread_count: Int,
+        headers: List<String>
+    ): ApiResponse<DownloadFileResponse> =
+        returnChannel.getReturnValue(ApiBuilder(DownloadFile(url, thread_count, headers)).build())
+
+    override suspend fun getOnlineClients(noCache: Boolean): ApiResponse<GetOnlineClientsResponse> =
+        returnChannel.getReturnValue(ApiBuilder(GetOnlineClients(noCache)).build())
+
+    override suspend fun setEssenceMsg(message_id: Int): ApiResponse<NullData> =
+        returnChannel.getReturnValue(ApiBuilder(SetEssenceMsg(message_id)).build())
+
+    override suspend fun deleteEssenceMsg(message_id: Int): ApiResponse<NullData> =
+        returnChannel.getReturnValue(ApiBuilder(DeleteEssenceMsg(message_id)).build())
+
+    override suspend fun checkUrlSafely(url: String): ApiResponse<CheckUrlSafelyResponse> =
+        returnChannel.getReturnValue(ApiBuilder(CheckUrlSafely(url)).build())
+
+    override suspend fun getModelShow(model: String): ApiResponse<GetModelShowResponse> =
+        returnChannel.getReturnValue(ApiBuilder(GetModelShow(model)).build())
+
+    override suspend fun setModelShow(model: String, model_show: String): ApiResponse<NullData> =
+        returnChannel.getReturnValue(ApiBuilder(SetModelShow(model, model_show)).build())
+
+    override suspend fun getGroupSystemMsg(): ApiResponse<GetGroupSystemMsgResponse> =
+        returnChannel.getReturnValue(ApiBuilder(GetGroupSystemMsg()).build())
+
+    override suspend fun getMsg(message_id: Int): ApiResponse<GetMsgResponse> =
+        returnChannel.getReturnValue(ApiBuilder(GetMsg(message_id)).build())
+
+    override suspend fun getForwardMsg(message_id: Int): ApiResponse<List<GetForwardMsgResponse>> =
+        returnChannel.getReturnValue(ApiBuilder(GetForwardMsg(message_id.toString())).build())
+
+    override suspend fun getImage(file: String): ApiResponse<GetImageResponse> =
+        returnChannel.getReturnValue(ApiBuilder(GetImage(file)).build())
+
+    override suspend fun getFriendById(user_id: Long): User = User(user_id)
+
+    @Throws(FriendNotFoundException::class)
+    override suspend fun getFriendByIdSafely(user_id: Long): User {
+        for (friend in getFriendList().data!!) {
+            if (friend.user_id == user_id) return User(user_id)
         }
-        return bot.groupList
+        throw FriendNotFoundException()
     }
 
-    override fun canSendImage(): Boolean {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getGroupById(group_id: Long): Group = Group(group_id)
 
-    override fun canSendRecord(): Boolean {
-        TODO("Not yet implemented")
-    }
-
-    override fun getVersionInfo(): GetVersionInfoResponse {
-        TODO("Not yet implemented")
-    }
-
-    override fun setGoCqhttpRestart(delay: Long) {
-        TODO("Not yet implemented")
-    }
-
-    override fun ocrImage(image_id: String): OcrImageResponse {
-        TODO("Not yet implemented")
-    }
-
-    override fun getStatus(): GetStatusResponse {
-        TODO("Not yet implemented")
-    }
-
-    override fun reloadEventFilter(file: String) {
-        TODO("Not yet implemented")
-    }
-
-    override fun downloadFile(url: String, thread_count: Int, headers: String) {
-        TODO("Not yet implemented")
-    }
-
-    override fun downloadFile(url: String, thread_count: Int, headers: Array<String>) {
-        TODO("Not yet implemented")
-    }
-
-    override fun getOnlineClients(noCache: Boolean): GetOnlineClientsResponse {
-        TODO("Not yet implemented")
-    }
-
-    override fun setEssenceMsg(message_id: Int) {
-        TODO("Not yet implemented")
-    }
-
-    override fun deleteEssenceMsg(message_id: Int) {
-        TODO("Not yet implemented")
-    }
-
-    override fun checkUrlSafely(url: String): CheckUrlSafelyResponse {
-        TODO("Not yet implemented")
-    }
-
-    override fun getModelShow(model: String): GetModelShowResponse {
-        TODO("Not yet implemented")
-    }
-
-    override fun setModelShow(model: String, model_show: String) {
-        TODO("Not yet implemented")
-    }
-
-    override fun getUserById(user_id: Long): User {
-        TODO("Not yet implemented")
-    }
-
-    override fun getGroupById(group_id: Long): Group {
-        return Group(group_id, bot)
-    }
-
+    @Throws(GroupNotFoundException::class)
     override suspend fun getGroupByIdSafely(group_id: Long): Group {
-        if (!(bot.isGroupListInitialized())) {
-            bot.utils.reflashGroupList()
-        }
-        for (group in bot.groupList) {
-            if (group.groupId == group_id) return Group(group_id, bot)
+        for (group in getGroupInfoList().data!!) {
+            if (group.group_id == group_id) return Group(group_id)
         }
         throw GroupNotFoundException()
     }
 
-    override fun getGroupUserById(user_id: Long, group_id: Long): GroupUser {
-        TODO("Not yet implemented")
+    override suspend fun getGroupUserById(user_id: Long, group_id: Long): GroupUser = GroupUser(user_id, group_id)
+
+    @Throws(GroupUserNotFoundException::class)
+    override suspend fun getGroupUserByIdSafely(user_id: Long, group_id: Long): GroupUser {
+        val group = getGroupByIdSafely(group_id)
+        for (member in group.getGroupMember().data!!) {
+            if (member.userId == user_id) return GroupUser(user_id, group_id)
+        }
+        throw GroupUserNotFoundException()
     }
 }

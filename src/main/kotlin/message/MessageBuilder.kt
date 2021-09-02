@@ -1,3 +1,4 @@
+@file:Suppress("unused")
 package message
 
 import com.fasterxml.jackson.annotation.JsonRawValue
@@ -13,9 +14,11 @@ class MessageBuilder {
     )
 
     private val stringBuilder = StringBuilder()
+
     init {
         stringBuilder.append("[")
     }
+
     fun addText(text: String): MessageBuilder {
         return this
     }

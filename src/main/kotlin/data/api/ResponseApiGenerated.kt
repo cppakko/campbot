@@ -1,5 +1,3 @@
-@file:Suppress("unused")
-
 package data.api
 
 import com.fasterxml.jackson.annotation.JsonRawValue
@@ -48,12 +46,6 @@ data class GetStrangerInfoResponse(
     val qid: String,
 )
 
-data class GetFriendListResponse(
-    val user_id: Long,
-    val nickname: String,
-    val remark: String,
-)
-
 //note: api:"/get_group_list" returns List<GetGroupInfoResponse>
 
 data class GetGroupInfoResponse(
@@ -95,7 +87,8 @@ data class GetGroupHonorInfoResponse(
     val emotion_list: List<HonorInfoEntry>,
 )
 
-data class GetCookiesResponse(
+//暂未支持
+/*data class GetCookiesResponse(
     val cookies: String,
 )
 
@@ -110,7 +103,7 @@ data class GetCredentialsResponse(
 
 data class GetRecordResponse(
     val file: String,
-)
+)*/
 
 data class CanSendImageResponse(
     val yes: Boolean,
@@ -231,9 +224,18 @@ data class GetModelShowResponse(
 )
 
 
-data class QidianGetAccountInfoResponse(
+/*data class QidianGetAccountInfoResponse(
     val master_id: Long,
     val ext_name: String,
     val create_time: Long,
+)*/
+
+class NullData
+
+data class ApiResponse<T>(
+    val `data`: T?,
+    val echo: String,
+    val retcode: Int,
+    val status: String
 )
 

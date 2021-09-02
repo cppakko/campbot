@@ -1,6 +1,5 @@
 package data.event
 
-import listener.Event
 import listener.PassiveEvent
 
 data class OtherClientStatusChangeEvent(
