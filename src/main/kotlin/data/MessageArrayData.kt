@@ -1,8 +1,8 @@
 package data
 
-/*data class Text(
+data class Text(
     val text: String
-)*/
+)
 
 data class Face(
     val id: Int
@@ -11,16 +11,16 @@ data class Face(
 data class Image(
     val file: String,
     val type: String,
-    val cache: Int,
+    val cache: String,
     val id: String,
-    val c:String
+    val c: String
 )
 
 data class ImageWithoutType(
     val file: String,
-    val cache: Int,
+    val cache: String,
     val id: String,
-    val c:String
+    val c: String
 )
 
 data class Record(
@@ -80,6 +80,10 @@ data class CustomMusic(
 )
 
 data class Reply(
+    val id: Int
+)
+
+data class CustomReply(
     val id: Int,
     val text: String,
     val qq: Long,
@@ -117,4 +121,9 @@ data class CardImage(
 
 data class TTS(
     val text: String
+)
+
+data class Gift(
+    val qq: Long,
+    val id: String
 )

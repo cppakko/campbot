@@ -1,7 +1,13 @@
 package data.event
 
+import api.ApiBuilder
+import data.api.ApiResponse
+import data.api.HandleQuickOperation
+import data.api.NullData
+import kotlinx.coroutines.channels.Channel
 import listener.GroupMsgEvent
 import listener.PrivateMsgEvent
+import utils.getReturnValue
 
 //https://docs.go-cqhttp.org/event/
 
@@ -19,6 +25,14 @@ data class PrivateMsg(
     val time: Long,
     val user_id: Long
 ): PrivateMsgEvent {
+    suspend fun reply(msg: String, auto_escape: Boolean = false): ApiResponse<NullData> =
+        Channel<String>().getReturnValue(ApiBuilder(HandleQuickOperation(this, ReplyData(msg, auto_escape))).build())
+
+    private data class ReplyData(
+        val msg: String,
+        val auto_escape: Boolean
+    )
+
     data class Message(
         val `data`: Data,
         val type: String
@@ -68,12 +82,51 @@ data class GroupMessageEvent(
     val time: Long,
     val user_id: Long
 ): GroupMsgEvent {
+    suspend fun reply(msg: String, auto_escape: Boolean = false, at_sender: Boolean = false): ApiResponse<NullData> =
+        Channel<String>().getReturnValue(
+            ApiBuilder(
+                HandleQuickOperation(
+                    this,
+                    ReplyData(msg, auto_escape, at_sender)
+                )
+            ).build()
+        )
+
+    suspend fun delete(): ApiResponse<NullData> =
+        Channel<String>().getReturnValue(ApiBuilder(HandleQuickOperation(this, DeleteData(true))).build())
+
+    suspend fun kick(): ApiResponse<NullData> =
+        Channel<String>().getReturnValue(ApiBuilder(HandleQuickOperation(this, KickData(true))).build())
+
+    suspend fun ban(duration: Long): ApiResponse<NullData> =
+        Channel<String>().getReturnValue(ApiBuilder(HandleQuickOperation(this, BanData(true, duration))).build())
+
+    private data class DeleteData(
+        val delete: Boolean
+    )
+
+    private data class KickData(
+        val kick: Boolean
+    )
+
+    private data class ReplyData(
+        val msg: String,
+        val auto_escape: Boolean,
+        val at_sender: Boolean
+    )
+
+    private data class BanData(
+        val ban: Boolean,
+        val ban_duration: Long
+    )
+
     data class Anonymous(
         val id: Long,
         val name: String,
         val flag: String
     )
-    data class Message(
+
+    private data class Message(
         val `data`: Data,
         val type: String
     )
@@ -90,7 +143,7 @@ data class GroupMessageEvent(
         val user_id: Long
     )
 
-    data class Data(
+    private data class Data(
         val text: String
     )
 }

@@ -337,6 +337,12 @@ data class SetModelShow(
     val model_show: String,
 ) : Api
 
+@ApiEndPoint(".handle_quick_operation")
+data class HandleQuickOperation<T, K>(
+    val context: T,
+    val operation: K
+) : Api
+
 @ApiEndPoint("get_group_list")
 class GetGroupList : Api
 

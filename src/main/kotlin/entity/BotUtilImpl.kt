@@ -10,9 +10,8 @@ import kotlinx.coroutines.channels.Channel
 import utils.getReturnValue
 
 class BotUtilImpl : BotUtil {
-    private val returnChannel = Channel<String>()
     override suspend fun setFriendAddRequest(flag: String, approve: Boolean, remark: String): ApiResponse<NullData> =
-        returnChannel.getReturnValue(ApiBuilder(SetFriendAddRequest(flag, approve, remark)).build())
+        Channel<String>().getReturnValue(ApiBuilder(SetFriendAddRequest(flag, approve, remark)).build())
 
     override suspend fun setGroupAddRequest(
         flag: String,
@@ -20,83 +19,81 @@ class BotUtilImpl : BotUtil {
         approve: Boolean,
         reason: String
     ): ApiResponse<NullData> =
-        returnChannel.getReturnValue(ApiBuilder(SetGroupAddRequest(flag, sub_type, approve, reason)).build())
+        Channel<String>().getReturnValue(ApiBuilder(SetGroupAddRequest(flag, sub_type, approve, reason)).build())
 
     override suspend fun getBotInfo(): ApiResponse<GetLoginInfoResponse> =
-        returnChannel.getReturnValue(ApiBuilder(GetLoginInfo()).build())
+        Channel<String>().getReturnValue(ApiBuilder(GetLoginInfo()).build())
 
     override suspend fun getStrangerInfo(user_id: Long, noCache: Boolean): ApiResponse<GetStrangerInfoResponse> =
-        returnChannel.getReturnValue(ApiBuilder(GetStrangerInfo(user_id, noCache)).build())
+        Channel<String>().getReturnValue(ApiBuilder(GetStrangerInfo(user_id, noCache)).build())
 
     override suspend fun getFriendList(): ApiResponse<Array<Friend>> =
-        returnChannel.getReturnValue(ApiBuilder(GetFriendList()).build())
+        Channel<String>().getReturnValue(ApiBuilder(GetFriendList()).build())
 
     override suspend fun deleteFriend(friend_id: Long): ApiResponse<NullData> =
-        returnChannel.getReturnValue(ApiBuilder(DeleteFriend(friend_id)).build())
+        Channel<String>().getReturnValue(ApiBuilder(DeleteFriend(friend_id)).build())
 
     override suspend fun getGroupInfo(group_id: Long, noCache: Boolean): ApiResponse<GetGroupInfoResponse> =
-        returnChannel.getReturnValue(ApiBuilder(GetGroupInfo(group_id, noCache)).build())
+        Channel<String>().getReturnValue(ApiBuilder(GetGroupInfo(group_id, noCache)).build())
 
     override suspend fun getGroupInfoList(): ApiResponse<List<GetGroupInfoResponse>> =
-        returnChannel.getReturnValue(ApiBuilder(GetGroupList()).build())
+        Channel<String>().getReturnValue(ApiBuilder(GetGroupList()).build())
 
     override suspend fun canSendImage(): ApiResponse<CanSendImageResponse> =
-        returnChannel.getReturnValue(ApiBuilder(CanSendImage()).build())
+        Channel<String>().getReturnValue(ApiBuilder(CanSendImage()).build())
 
     override suspend fun canSendRecord(): ApiResponse<CanSendRecordResponse> =
-        returnChannel.getReturnValue(ApiBuilder(CanSendRecord()).build())
+        Channel<String>().getReturnValue(ApiBuilder(CanSendRecord()).build())
 
     override suspend fun getVersionInfo(): ApiResponse<GetVersionInfoResponse> =
-        returnChannel.getReturnValue(ApiBuilder(GetVersionInfo()).build())
+        Channel<String>().getReturnValue(ApiBuilder(GetVersionInfo()).build())
 
     override suspend fun setGoCqhttpRestart(delay: Long): ApiResponse<NullData> =
-        returnChannel.getReturnValue(ApiBuilder(SetRestart(delay)).build())
+        Channel<String>().getReturnValue(ApiBuilder(SetRestart(delay)).build())
 
     override suspend fun ocrImage(image_id: String): ApiResponse<OcrImageResponse> =
-        returnChannel.getReturnValue(ApiBuilder(OcrImage(image_id)).build())
+        Channel<String>().getReturnValue(ApiBuilder(OcrImage(image_id)).build())
 
     override suspend fun getStatus(): ApiResponse<GetStatusResponse> =
-        returnChannel.getReturnValue(ApiBuilder(GetStatus()).build())
+        Channel<String>().getReturnValue(ApiBuilder(GetStatus()).build())
 
     override suspend fun reloadEventFilter(file: String): ApiResponse<NullData> =
-        returnChannel.getReturnValue(ApiBuilder(ReloadEventFilter(file)).build())
+        Channel<String>().getReturnValue(ApiBuilder(ReloadEventFilter(file)).build())
 
     override suspend fun downloadFile(
-        url: String,
-        thread_count: Int,
-        headers: List<String>
+        url: String, thread_count: Int, headers: List<String>
     ): ApiResponse<DownloadFileResponse> =
-        returnChannel.getReturnValue(ApiBuilder(DownloadFile(url, thread_count, headers)).build())
+        Channel<String>().getReturnValue(ApiBuilder(DownloadFile(url, thread_count, headers)).build())
 
     override suspend fun getOnlineClients(noCache: Boolean): ApiResponse<GetOnlineClientsResponse> =
-        returnChannel.getReturnValue(ApiBuilder(GetOnlineClients(noCache)).build())
+        Channel<String>().getReturnValue(ApiBuilder(GetOnlineClients(noCache)).build())
 
     override suspend fun setEssenceMsg(message_id: Int): ApiResponse<NullData> =
-        returnChannel.getReturnValue(ApiBuilder(SetEssenceMsg(message_id)).build())
+        Channel<String>().getReturnValue(ApiBuilder(SetEssenceMsg(message_id)).build())
 
     override suspend fun deleteEssenceMsg(message_id: Int): ApiResponse<NullData> =
-        returnChannel.getReturnValue(ApiBuilder(DeleteEssenceMsg(message_id)).build())
+        Channel<String>().getReturnValue(ApiBuilder(DeleteEssenceMsg(message_id)).build())
 
     override suspend fun checkUrlSafely(url: String): ApiResponse<CheckUrlSafelyResponse> =
-        returnChannel.getReturnValue(ApiBuilder(CheckUrlSafely(url)).build())
+        Channel<String>().getReturnValue(ApiBuilder(CheckUrlSafely(url)).build())
 
     override suspend fun getModelShow(model: String): ApiResponse<GetModelShowResponse> =
-        returnChannel.getReturnValue(ApiBuilder(GetModelShow(model)).build())
+        Channel<String>().getReturnValue(ApiBuilder(GetModelShow(model)).build())
 
     override suspend fun setModelShow(model: String, model_show: String): ApiResponse<NullData> =
-        returnChannel.getReturnValue(ApiBuilder(SetModelShow(model, model_show)).build())
+        Channel<String>().getReturnValue(ApiBuilder(SetModelShow(model, model_show)).build())
 
     override suspend fun getGroupSystemMsg(): ApiResponse<GetGroupSystemMsgResponse> =
-        returnChannel.getReturnValue(ApiBuilder(GetGroupSystemMsg()).build())
+        Channel<String>().getReturnValue(ApiBuilder(GetGroupSystemMsg()).build())
 
     override suspend fun getMsg(message_id: Int): ApiResponse<GetMsgResponse> =
-        returnChannel.getReturnValue(ApiBuilder(GetMsg(message_id)).build())
+        Channel<String>().getReturnValue(ApiBuilder(GetMsg(message_id)).build())
 
-    override suspend fun getForwardMsg(message_id: Int): ApiResponse<List<GetForwardMsgResponse>> =
-        returnChannel.getReturnValue(ApiBuilder(GetForwardMsg(message_id.toString())).build())
+    override suspend fun getForwardMsg(message_id: String): ApiResponse<List<GetForwardMsgResponse>> =
+        Channel<String>().getReturnValue(ApiBuilder(GetForwardMsg(message_id.toString())).build())
 
     override suspend fun getImage(file: String): ApiResponse<GetImageResponse> =
-        returnChannel.getReturnValue(ApiBuilder(GetImage(file)).build())
+        Channel<String>().getReturnValue(ApiBuilder(GetImage(file)).build())
 
     override suspend fun getFriendById(user_id: Long): User = User(user_id)
 
@@ -112,7 +109,8 @@ class BotUtilImpl : BotUtil {
 
     @Throws(GroupNotFoundException::class)
     override suspend fun getGroupByIdSafely(group_id: Long): Group {
-        for (group in getGroupInfoList().data!!) {
+        val list = getGroupInfoList()
+        for (group in list.data!!) {
             if (group.group_id == group_id) return Group(group_id)
         }
         throw GroupNotFoundException()
@@ -123,8 +121,8 @@ class BotUtilImpl : BotUtil {
     @Throws(GroupUserNotFoundException::class)
     override suspend fun getGroupUserByIdSafely(user_id: Long, group_id: Long): GroupUser {
         val group = getGroupByIdSafely(group_id)
-        for (member in group.getGroupMember().data!!) {
-            if (member.userId == user_id) return GroupUser(user_id, group_id)
+        for (member in group.getGroupMemberInfoList().data!!) {
+            if (member.user_id == user_id) return GroupUser(user_id, group_id)
         }
         throw GroupUserNotFoundException()
     }

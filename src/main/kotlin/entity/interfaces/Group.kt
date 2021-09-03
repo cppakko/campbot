@@ -2,12 +2,11 @@ package entity.interfaces
 
 import data.api.*
 import data.event.GroupMessageEvent
-import entity.User
 
 interface GroupInterface {
     val groupId: Long
 
-    suspend fun getGroupMember(): ApiResponse<List<User>>
+    //suspend fun getGroupMember(): ApiResponse<List<User>>
     suspend fun sendGroupMsg(msg: String): ApiResponse<SendPrivateMsgResponse>
     suspend fun setGroupKick(user_id: Long): ApiResponse<NullData>
     suspend fun setGroupAnonymousBan(

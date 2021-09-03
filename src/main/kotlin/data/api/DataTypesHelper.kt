@@ -86,13 +86,14 @@ data class Folder(
 )
 
 data class Statistics(
-    val packet_received: ULong,
-    val packet_sent: ULong,
-    val packet_lost: UInt,
-    val message_received: ULong,
-    val message_sent: ULong,
-    val disconnect_times: UInt,
-    val lost_times: UInt,
+    val packet_received: Long,
+    val packet_sent: Long,
+    val packet_lost: Long,
+    val message_received: Long,
+    val message_sent: Long,
+    val disconnect_times: Long,
+    val lost_times: Long,
+    val last_message_time: Long
 )
 
 data class Device(

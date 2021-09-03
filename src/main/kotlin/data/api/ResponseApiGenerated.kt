@@ -74,6 +74,7 @@ data class GetGroupMemberInfoResponse(
     val title: String,
     val title_expire_time: Long,
     val card_changeable: Boolean,
+    val shut_up_timestamp: Long
 )
 
 

@@ -36,7 +36,7 @@ suspend fun DefaultClientWebSocketSession.inputMessages() {
     }
 }
 
-fun DefaultClientWebSocketSession.outputMessages(str: String) {
+suspend fun DefaultClientWebSocketSession.outputMessages(str: String) {
     try {
         for (message in incoming) {
             message as? Frame.Text ?: continue

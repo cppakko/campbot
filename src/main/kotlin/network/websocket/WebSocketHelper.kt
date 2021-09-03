@@ -23,7 +23,7 @@ class WebSocketHelper {
                 install(WebSockets)
             }
             val messageOutputRoutine = launch {
-                client.webSocket(method = HttpMethod.Get, host = bot.ipAddress, port = bot.port, path = "/") {
+                client.webSocket(method = HttpMethod.Get, host = bot.ipAddress, port = bot.port, path = "/event") {
                     launch { this@webSocket.outputMessages() }.join()
                 }
             }
