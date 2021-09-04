@@ -340,7 +340,7 @@ data class SetModelShow(
 @ApiEndPoint(".handle_quick_operation")
 data class HandleQuickOperation<T, K>(
     val context: T,
-    val operation: K
+    @JsonRawValue val operation: K
 ) : Api
 
 @ApiEndPoint("get_group_list")

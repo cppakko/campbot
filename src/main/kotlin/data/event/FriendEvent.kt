@@ -1,6 +1,7 @@
 package data.event
 
 import api.ApiBuilder
+import com.fasterxml.jackson.databind.ObjectMapper
 import data.api.ApiResponse
 import data.api.HandleQuickOperation
 import data.api.NullData
@@ -61,7 +62,7 @@ data class FriendAddRequest(
 ) : PassiveEvent {
     suspend fun accept(isAccept: Boolean, remark: String): ApiResponse<NullData> = Channel<String>().getReturnValue(
         ApiBuilder(
-            HandleQuickOperation(this, ApproveData(isAccept, remark))
+            HandleQuickOperation(this, ObjectMapper().writeValueAsString(ApproveData(isAccept, remark)))
         ).build()
     )
 

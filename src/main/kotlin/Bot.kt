@@ -1,5 +1,4 @@
 import entity.BotUtilImpl
-import event.EventLogger
 import event.EventManager
 import event.EventPasser
 import kotlinx.coroutines.Job
@@ -21,7 +20,6 @@ class Bot(
         coroutineScope {
             isRunning = true
             launch { EventPasser(this@Bot).run() }
-            launch { EventLogger().init() }
             launch { WebSocketHelper().connectionInit(this@Bot) }
         }
     }

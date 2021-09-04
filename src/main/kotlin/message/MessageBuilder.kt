@@ -1,4 +1,5 @@
 @file:Suppress("unused")
+
 package message
 
 import com.fasterxml.jackson.annotation.JsonRawValue
@@ -181,9 +182,15 @@ class MessageBuilder {
         return this
     }
 
-    fun build(): String {
-        stringBuilder.append("]")
-        return stringBuilder.toString()
+    fun addRowCqcodeAndBuild(cqcode: String): String = stringBuilder.run {
+        clear()
+        append(cqcode)
+        toString()
+    }
+
+    fun build(): String = stringBuilder.run {
+        append("]")
+        toString()
     }
 
     private fun addObject(data: Any, type: CqcodeType) {

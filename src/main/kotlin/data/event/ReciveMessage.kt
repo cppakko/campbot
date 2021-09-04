@@ -1,6 +1,8 @@
 package data.event
 
 import api.ApiBuilder
+import com.fasterxml.jackson.annotation.JsonRawValue
+import com.fasterxml.jackson.databind.ObjectMapper
 import data.api.ApiResponse
 import data.api.HandleQuickOperation
 import data.api.NullData
@@ -26,11 +28,19 @@ data class PrivateMsg(
     val user_id: Long
 ): PrivateMsgEvent {
     suspend fun reply(msg: String, auto_escape: Boolean = false): ApiResponse<NullData> =
-        Channel<String>().getReturnValue(ApiBuilder(HandleQuickOperation(this, ReplyData(msg, auto_escape))).build())
+        Channel<String>()
+            .getReturnValue(
+                ApiBuilder(
+                    HandleQuickOperation(
+                        this,
+                        ObjectMapper().writeValueAsString(ReplyData(msg, auto_escape))
+                    )
+                ).build()
+            )
 
     private data class ReplyData(
-        val msg: String,
-        val auto_escape: Boolean
+        @JsonRawValue val reply: String,
+        @JsonRawValue val auto_escape: Boolean
     )
 
     data class Message(
@@ -87,19 +97,40 @@ data class GroupMessageEvent(
             ApiBuilder(
                 HandleQuickOperation(
                     this,
-                    ReplyData(msg, auto_escape, at_sender)
+                    ObjectMapper().writeValueAsString(ReplyData(msg, auto_escape, at_sender))
                 )
             ).build()
         )
 
     suspend fun delete(): ApiResponse<NullData> =
-        Channel<String>().getReturnValue(ApiBuilder(HandleQuickOperation(this, DeleteData(true))).build())
+        Channel<String>().getReturnValue(
+            ApiBuilder(
+                HandleQuickOperation(
+                    this,
+                    ObjectMapper().writeValueAsString(DeleteData(true))
+                )
+            ).build()
+        )
 
     suspend fun kick(): ApiResponse<NullData> =
-        Channel<String>().getReturnValue(ApiBuilder(HandleQuickOperation(this, KickData(true))).build())
+        Channel<String>().getReturnValue(
+            ApiBuilder(
+                HandleQuickOperation(
+                    this,
+                    ObjectMapper().writeValueAsString(KickData(true))
+                )
+            ).build()
+        )
 
     suspend fun ban(duration: Long): ApiResponse<NullData> =
-        Channel<String>().getReturnValue(ApiBuilder(HandleQuickOperation(this, BanData(true, duration))).build())
+        Channel<String>().getReturnValue(
+            ApiBuilder(
+                HandleQuickOperation(
+                    this,
+                    ObjectMapper().writeValueAsString(BanData(true, duration))
+                )
+            ).build()
+        )
 
     private data class DeleteData(
         val delete: Boolean
@@ -110,7 +141,7 @@ data class GroupMessageEvent(
     )
 
     private data class ReplyData(
-        val msg: String,
+        val reply: String,
         val auto_escape: Boolean,
         val at_sender: Boolean
     )

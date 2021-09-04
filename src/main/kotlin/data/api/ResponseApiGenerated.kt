@@ -14,12 +14,17 @@ data class SendMsgResponse(
     val message_id: Int,
 )
 
+//TODO MESSAGE
 data class GetMsgResponse(
+    val group: Boolean,
+    val group_id: Long,
     val message_id: Int,
+    val message_seq: Int,
+    val message_type: String,
     val real_id: Int,
     val sender: Sender,
     val time: Int,
-    @JsonRawValue val message: String,
+    @JsonRawValue val message: List<*>,
     val raw_message: String,
 )
 

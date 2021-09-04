@@ -65,3 +65,8 @@ fun String.readUserId(): Long = ObjectMapper()
     .readTree(this)
     .get("user_id")
     .asLong()
+
+fun String.readRawMessage(): String = ObjectMapper()
+    .readTree(this)
+    .get("raw_message")
+    .asText()
