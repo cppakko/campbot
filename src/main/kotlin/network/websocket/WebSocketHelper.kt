@@ -3,6 +3,7 @@ package network.websocket
 import Bot
 import io.ktor.client.*
 import io.ktor.client.features.websocket.*
+import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.http.cio.websocket.*
 import kotlinx.coroutines.channels.Channel
@@ -23,12 +24,28 @@ class WebSocketHelper {
                 install(WebSockets)
             }
             val messageOutputRoutine = launch {
-                client.webSocket(method = HttpMethod.Get, host = bot.ipAddress, port = bot.port, path = "/event") {
+                client.webSocket(
+                    method = HttpMethod.Get,
+                    host = bot.ipAddress,
+                    port = bot.port,
+                    path = "/event",
+                    request = {
+                        header("Authorization", bot.accessToken)
+                    }
+                ) {
                     launch { this@webSocket.outputMessages() }.join()
                 }
             }
             launch {
-                client.webSocket(method = HttpMethod.Post, host = bot.ipAddress, port = bot.port, path = "/api") {
+                client.webSocket(
+                    method = HttpMethod.Post,
+                    host = bot.ipAddress,
+                    port = bot.port,
+                    path = "/api",
+                    request = {
+                        header("Authorization", bot.accessToken)
+                    }
+                ) {
                     launch {
                         for (apiCall in callApiChannel) {
                             this@webSocket.send(apiCall.first)
