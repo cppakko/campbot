@@ -1,13 +1,6 @@
 package botTest
 
-import Bot
-import io.ktor.client.*
-import io.ktor.client.features.websocket.*
-import io.ktor.http.*
-import io.ktor.http.cio.websocket.*
-import kotlinx.coroutines.*
-import org.junit.jupiter.api.Test
-
+/*
 class ConnectTest {
     @Test
     fun openAndCloseTest() {
@@ -72,4 +65,4 @@ fun main() {
     }
     client.close()
     println("Connection closed. Goodbye!")
-}
+}*/

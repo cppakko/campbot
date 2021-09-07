@@ -11,7 +11,6 @@ class Bot(
     val port: Int,
     val accessToken: String = ""
 ) {
-    //TODO 优化初始化顺序 确保不出现NULL
     lateinit var rootPathClientJob: Job
     val eventManager = EventManager(this)
     private var isRunning: Boolean = false

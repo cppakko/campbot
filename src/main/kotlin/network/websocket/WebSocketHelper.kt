@@ -11,7 +11,6 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import utils.outputMessages
 
-//TODO RENAME
 class WebSocketHelper {
     companion object {
         val callApiChannel = Channel<Pair<String, Channel<String>>>()
@@ -52,7 +51,6 @@ class WebSocketHelper {
                             apiOutputChannel.send(apiCall.second)
                         }
                     }
-                    //TODO logger
                     launch {
                         try {
                             for (message in incoming) {

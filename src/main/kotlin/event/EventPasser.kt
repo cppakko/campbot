@@ -21,20 +21,17 @@ internal class EventPasser(private val bot: Bot) {
         val channel = Channel<String>()
         val logger = KotlinLogging.logger {}
     }
-    //TODO 调整日志输出
-    //TODO 并发处理
     suspend fun run() {
         for (rowEventStr in channel) {
             logger.info { rowEventStr }
             when (rowEventStr.readPostType()) {
                 META_EVENT -> when (rowEventStr.readMetaEventType()) {
                     HEARTBEAT -> {
-                        val obj = rowEventStr.asJsonObject<HeartEvent>()
-                        logger.info { "${obj.time} ♥跳了一下~" }
+                        bot.eventManager.notify(rowEventStr.asJsonObject<HeartEvent>())
                     }
                     LIFECYCLE -> {
-                        val obj = rowEventStr.asJsonObject<LifeCycleEvent>()
-                        logger.info { "${obj.time} ${obj.self_id} 连接成功!" }
+                        bot.eventManager.notify(rowEventStr.asJsonObject<LifeCycleEvent>())
+                        logger.info { "连接成功!" }
                     }
                 }
                 MESSAGE_EVENT -> when (rowEventStr.readMessageType()) {

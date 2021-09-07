@@ -1,5 +1,7 @@
 package data
 
+import com.fasterxml.jackson.annotation.JsonRawValue
+
 data class Text(
     val text: String
 )
@@ -94,15 +96,15 @@ data class CustomReply(
 data class Forward(
     val id: String
 )
-//TODO
-/*data class Node(
+
+data class Node(
     val id: String
-)*/
+)
 
 data class CustomNode(
-    val user_id: String,
-    val nickname: String,
-    val content: String
+    val name: String,
+    val uin: Long,
+    @JsonRawValue val content: String,
 )
 
 data class XMLOrJsonMessage(

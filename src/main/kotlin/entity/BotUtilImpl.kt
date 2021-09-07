@@ -90,7 +90,7 @@ class BotUtilImpl : BotUtil {
         Channel<String>().getReturnValue(ApiBuilder(GetMsg(message_id)).build())
 
     override suspend fun getForwardMsg(message_id: String): ApiResponse<List<GetForwardMsgResponse>> =
-        Channel<String>().getReturnValue(ApiBuilder(GetForwardMsg(message_id.toString())).build())
+        Channel<String>().getReturnValue(ApiBuilder(GetForwardMsg(message_id)).build())
 
     override suspend fun getImage(file: String): ApiResponse<GetImageResponse> =
         Channel<String>().getReturnValue(ApiBuilder(GetImage(file)).build())

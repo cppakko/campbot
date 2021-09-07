@@ -49,7 +49,6 @@ enum class NoticeEnum(val notice_type: String) {
     }
 }
 
-//TODO FROM在相同的STRING下有歧义
 enum class SubTypeEnum(val sub_type: String) {
     FRIEND_MESSAGE("friend"),
     GROUP_TEMP_MESSAGE("group"),

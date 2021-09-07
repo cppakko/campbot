@@ -8,6 +8,7 @@ import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import data.*
 
 //https://github.com/botuniverse/onebot/blob/master/v11/specs/message/segment.md
+
 class MessageBuilder {
     private data class MessageArray(
         val type: String,
@@ -30,7 +31,6 @@ class MessageBuilder {
         return this
     }
 
-    //TODO
     fun addImage(file: String, type: String, cache: String = "1", id: String = "40000", c: Int = 3): MessageBuilder {
         addObject(Image(file, type, cache, id, c.toString()), CqcodeType.IMAGE)
         return this
@@ -143,12 +143,16 @@ class MessageBuilder {
         return this
     }
 
-    /*fun addNode(id: String): MessageBuilder {
+    fun addNode(id: String): MessageBuilder {
+        addObject(Node(id), CqcodeType.NODE)
         return this
     }
-    fun addNodes(user_id: String,nickname: String,content: String): MessageBuilder {
+
+    fun addCustomNode(name: String, uin: Long, content: String): MessageBuilder {
+        addObject(CustomNode(name, uin, content), CqcodeType.NODE)
         return this
-    }*/
+    }
+
     fun addXMLMsg(data: String): MessageBuilder {
         addObject(XMLOrJsonMessage(data), CqcodeType.XML)
         return this

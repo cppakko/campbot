@@ -14,7 +14,6 @@ data class SendMsgResponse(
     val message_id: Int,
 )
 
-//TODO MESSAGE
 data class GetMsgResponse(
     val group: Boolean,
     val group_id: Long,

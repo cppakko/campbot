@@ -41,6 +41,3 @@ interface GroupCommandListener<T : GroupMsgEvent> : CommandListener {
 interface PrivateCommandListener<T : PrivateMsgEvent> : CommandListener {
     suspend fun handle(bot: Bot, info: T, user: User)
 }
-
-//TODO
-interface UniversalCommandListener

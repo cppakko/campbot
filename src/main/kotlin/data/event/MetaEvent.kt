@@ -1,6 +1,6 @@
 package data.event
 
-import listener.Event
+import listener.PassiveEvent
 
 data class LifeCycleEvent(
     val _post_method: Int,
@@ -9,7 +9,7 @@ data class LifeCycleEvent(
     val self_id: Int,
     val sub_type: String,
     val time: Int
-): Event
+) : PassiveEvent
 
 data class HeartEvent(
     val interval: Int,
@@ -18,7 +18,7 @@ data class HeartEvent(
     val self_id: Long,
     val status: Status,
     val time: Int
-): Event {
+) : PassiveEvent {
     data class Status(
         val app_enabled: Boolean,
         val app_good: Boolean,

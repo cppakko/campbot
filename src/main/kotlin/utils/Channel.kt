@@ -12,7 +12,6 @@ import network.websocket.WebSocketHelper
 suspend inline fun <reified T> Channel<String>.getReturnValue(apiMsg: String): ApiResponse<T> {
     WebSocketHelper.callApiChannel.send(Pair(apiMsg, this))
     for (str in this) {
-        //TODO OPTI
         val mapper = ObjectMapper().registerKotlinModule()
         val jsonNodeTree = mapper.readTree(str)
         if (jsonNodeTree.get("status").toString() == "\"ok\"") {
