@@ -14,7 +14,7 @@ CAMPBOT ( ·ㅂ·)و
 添加jitpack仓库到pom.xml中
 
 ``` xml
-//如果使用maven作为构建系统的话
+<!-- 如果使用maven作为构建系统的话 -->
 <repositories>
     <repository>
         <id>jitpack.io</id>
@@ -35,7 +35,7 @@ allprojects {
 然后添加这个项目
 
 ``` xml
-//如果使用maven作为构建系统的话
+<!-- 如果使用maven作为构建系统的话 -->
 <dependency>
     <groupId>com.github.cppakko</groupId>
     <artifactId>campbot</artifactId>
