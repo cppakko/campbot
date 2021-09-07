@@ -110,13 +110,15 @@ class ShowVersion : PrivateCommandListener<FriendPrivateMsg> {
     override suspend fun handle(bot: Bot, info: FriendPrivateMsg, user: User) {
         info.data.reply(
             MessageBuilder()
-                .addText("asd")
+                .addText("version: 0.5.0-beta")
                 .build()
         )
         //这里执行的操作是对该事件的快速操作
         //部分事件为了区分被我包了一层
         //所以这里要info.data才能真的拿到该事件的数据
+
         //也可以选择用user对象对其发送私聊消息
+        user.sendPrivateMsg(MessageBuilder().addText("version: 0.5.0-beta").build())
     }
 
     override fun commandPrefix(): List<String> {
@@ -163,7 +165,7 @@ class ShowVersion : PrivateCommandListener<FriendPrivateMsg> {
     override suspend fun handle(bot: Bot, info: FriendPrivateMsg, user: User) {
         info.data.reply(
             MessageBuilder()
-                .addText("asd")
+                .addText("version: 0.5.0-beta")
                 .build()
         )
         //这里执行的操作是对该事件的快速操作
