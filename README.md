@@ -1,7 +1,13 @@
-<h3 align="center">基于<a href="https://github.com/Mrs4s/go-cqhttp">go-cqhttp</a>使用正向ws连接的旧世代机器人开发框架 CAMPBOT ( ·ㅂ·)و
-̑̑</h3>
+<h3 align="center">基于<a href="https://github.com/Mrs4s/go-cqhttp">go-cqhttp</a>使用正向ws连接的旧世代机器人开发框架 ̑̑</h3>
+
+<h1 align="center">
+CAMPBOT ( ·ㅂ·)و
 
 ![](https://jitpack.io/v/cppakko/campbot.svg)
+
+</h1>
+
+---
 
 ## 导入:
 
@@ -21,7 +27,6 @@
 //如果使用gradle作为构建系统的话
 allprojects {
 		repositories {
-			...
 			maven { url 'https://jitpack.io' }
 		}
 	}
@@ -44,6 +49,8 @@ dependencies {
 	        implementation 'com.github.cppakko:campbot:0.5.0-beta'
 	}
 ```
+
+---
 
 ## 快速开始
 
@@ -174,10 +181,14 @@ class ShowVersion : PrivateCommandListener<FriendPrivateMsg> {
 
 </details>
 
-事件列表直接去看
+---
+
+~~ps 文档尚未完善 事件列表可以先去看~~
 [go-cqhttp](https://docs.go-cqhttp.org/event/)
-的文档 名字基本上都一一对应了(确信 过段时间再在这里补上(确信
+~~的文档 名字基本上都一一对应了(确信 过段时间再在这里补上(确信~~
 
-Api部分 针对Group的Api都在Group对象里 User也是一样
+~~Api部分 针对Group的Api都在Group对象里 User也是一样~~
 
-主动查询的Api在Bot.utils下
+~~主动查询的Api在Bot.utils下~~
+
+

@@ -4,12 +4,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>mainModule</artifactId>
+    <artifactId>campBot</artifactId>
     <groupId>xyz.akko</groupId>
     <version>0.5.0-beta</version>
     <packaging>jar</packaging>
 
-    <name>mainModule</name>
+    <name>campBot</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
