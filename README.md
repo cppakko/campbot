@@ -139,7 +139,7 @@ class ShowVersion : PrivateCommandListener<FriendPrivateMsg> {
 <summary>完整例子</summary>
 
 ```kotlin
-fun main() = runBlocking {
+fun main(): Unit = runBlocking {
     val bot = Bot("127.0.0.1", 6700, "hhh1234567890")
     bot.eventManager
         .setCommandPrefix('!', '#')
