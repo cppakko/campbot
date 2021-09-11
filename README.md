@@ -143,7 +143,7 @@ fun main() = runBlocking {
     val bot = Bot("127.0.0.1", 6700, "hhh1234567890")
     bot.eventManager
         .setCommandPrefix('!', '#')
-        .register(AdminSetListemer())
+        .register(AdminSetListener())
         .commandRegister(ShowVersion())
     launch {
         bot.open()
